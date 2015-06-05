@@ -18,9 +18,12 @@ namespace FlatBuffers.Schema
             messages.Add(messageId, creator);
         }
 
-        public void Register<T>(T messageId, MessageCreator creator)
-            where T : IConvertible
+        public void Register<TEnum>(TEnum messageId, MessageCreator creator)
+            where TEnum : struct, IConvertible
         {
+            if (!typeof(TEnum).IsEnum)
+                throw new ArgumentException("Type of messageId must be an enum");
+
             var intMessageId = ((IConvertible)messageId).ToInt32(Thread.CurrentThread.CurrentCulture);
 
             Register(intMessageId, creator);
