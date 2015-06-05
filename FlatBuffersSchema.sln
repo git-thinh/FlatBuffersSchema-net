@@ -5,6 +5,10 @@ VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlatBuffersSchema", "FlatBuffersSchema\FlatBuffersSchema.csproj", "{7AA1056F-378A-4809-8D31-F9283D0CFF3C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlatBuffersSchemaTests", "FlatBuffersSchemaTests\FlatBuffersSchemaTests.csproj", "{2941BCC1-6992-4185-88D0-EA839EBDC684}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlatBuffersSchemaExamples", "FlatBuffersSchemaExamples\FlatBuffersSchemaExamples.csproj", "{E03DEB2F-38E4-4CFB-BC6C-DFB77D9A38B1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{7AA1056F-378A-4809-8D31-F9283D0CFF3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7AA1056F-378A-4809-8D31-F9283D0CFF3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7AA1056F-378A-4809-8D31-F9283D0CFF3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2941BCC1-6992-4185-88D0-EA839EBDC684}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2941BCC1-6992-4185-88D0-EA839EBDC684}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2941BCC1-6992-4185-88D0-EA839EBDC684}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2941BCC1-6992-4185-88D0-EA839EBDC684}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E03DEB2F-38E4-4CFB-BC6C-DFB77D9A38B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E03DEB2F-38E4-4CFB-BC6C-DFB77D9A38B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E03DEB2F-38E4-4CFB-BC6C-DFB77D9A38B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E03DEB2F-38E4-4CFB-BC6C-DFB77D9A38B1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

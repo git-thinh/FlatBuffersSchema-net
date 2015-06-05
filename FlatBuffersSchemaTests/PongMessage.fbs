@@ -1,0 +1,8 @@
+namespace FlatBuffers.Schema.Test;
+
+table PongMessage {
+	count: int;
+	msg: string;
+}
+
+root_type PongMessage;

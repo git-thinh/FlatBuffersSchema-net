@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7AA1056F-378A-4809-8D31-F9283D0CFF3C}</ProjectGuid>
+    <ProjectGuid>{2941BCC1-6992-4185-88D0-EA839EBDC684}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FlatBuffers.Schema</RootNamespace>
-    <AssemblyName>FlatBuffersSchema</AssemblyName>
+    <AssemblyName>FlatBuffersSchemaTests</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -34,25 +34,35 @@
     <Reference Include="FlatBuffers">
       <HintPath>..\FlatBuffers\FlatBuffers.dll</HintPath>
     </Reference>
+    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ByteQueue.cs" />
-    <Compile Include="GeneratedCode\FlatBuffers\Schema\ProtocolMessage.cs" />
-    <Compile Include="Message.cs" />
-    <Compile Include="MessageProcessor.cs" />
-    <Compile Include="MessageQueue.cs" />
+    <Compile Include="GeneratedCode\FlatBuffers\Schema\Test\PingMessage.cs" />
+    <Compile Include="GeneratedCode\FlatBuffers\Schema\Test\PongMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="MessageSchema.cs" />
+    <Compile Include="Tests\ByteQueueTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FlatBuffersSchema\FlatBuffersSchema.csproj">
+      <Project>{7aa1056f-378a-4809-8d31-f9283d0cff3c}</Project>
+      <Name>FlatBuffersSchema</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="PingMessage.fbs" />
+    <None Include="PongMessage.fbs" />
   </ItemGroup>
   <ItemGroup />
-  <ItemGroup>
-    <None Include="ProtocolMessage.fbs" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>$(SolutionDir)FlatBuffers\flatc.exe -n -o $(ProjectDir)GeneratedCode $(ProjectDir)ProtocolMessage.fbs</PreBuildEvent>
+    <PreBuildEvent>cd $(ProjectDir)
+$(SolutionDir)FlatBuffers\flatc.exe -n -o GeneratedCode PingMessage.fbs PongMessage.fbs</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

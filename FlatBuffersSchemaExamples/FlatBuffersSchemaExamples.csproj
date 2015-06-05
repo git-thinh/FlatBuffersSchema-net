@@ -4,16 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7AA1056F-378A-4809-8D31-F9283D0CFF3C}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{E03DEB2F-38E4-4CFB-BC6C-DFB77D9A38B1}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FlatBuffers.Schema</RootNamespace>
-    <AssemblyName>FlatBuffersSchema</AssemblyName>
+    <AssemblyName>FlatBuffersSchemaExamples</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -38,22 +40,23 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ByteQueue.cs" />
-    <Compile Include="GeneratedCode\FlatBuffers\Schema\ProtocolMessage.cs" />
-    <Compile Include="Message.cs" />
-    <Compile Include="MessageProcessor.cs" />
-    <Compile Include="MessageQueue.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="MessageSchema.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <None Include="ProtocolMessage.fbs" />
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FlatBuffersSchemaTests\FlatBuffersSchemaTests.csproj">
+      <Project>{2941bcc1-6992-4185-88d0-ea839ebdc684}</Project>
+      <Name>FlatBuffersSchemaTests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FlatBuffersSchema\FlatBuffersSchema.csproj">
+      <Project>{7aa1056f-378a-4809-8d31-f9283d0cff3c}</Project>
+      <Name>FlatBuffersSchema</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PreBuildEvent>$(SolutionDir)FlatBuffers\flatc.exe -n -o $(ProjectDir)GeneratedCode $(ProjectDir)ProtocolMessage.fbs</PreBuildEvent>
-  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

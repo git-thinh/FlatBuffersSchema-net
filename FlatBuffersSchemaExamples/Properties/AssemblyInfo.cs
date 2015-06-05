@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // 有关程序集的常规信息通过以下
 // 特性集控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("FlatBuffersSchema")]
+[assembly: AssemblyTitle("FlatBuffersSchemaExamples")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Wu Yuntao")]
-[assembly: AssemblyProduct("FlatBuffersSchema")]
+[assembly: AssemblyProduct("FlatBuffersSchemaExamples")]
 [assembly: AssemblyCopyright("Copyright Wu Yuntao © 2015")]
 [assembly: AssemblyTrademark("Wu Yuntao")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // 如果此项目向 COM 公开，则下列 GUID 用于类型库的 ID
-[assembly: Guid("eb42512b-1b43-44b9-8ee0-4fe3a142cafc")]
+[assembly: Guid("f5151b44-443e-4676-8bd1-83f4ed827cba")]
 
 // 程序集的版本信息由下面四个值组成: 
 //
@@ -34,5 +34,3 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("0.0.1.0")]
 [assembly: AssemblyFileVersion("0.0.1.0")]
-
-[assembly: InternalsVisibleTo("FlatBuffersSchemaTests")]
