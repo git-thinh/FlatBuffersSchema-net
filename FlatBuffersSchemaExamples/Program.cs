@@ -6,8 +6,11 @@ namespace FlatBuffers.Schema.Examples
     {
         static void Main(string[] args)
         {
-            var tests = new ByteQueueTests();
-            tests.TestInt();
+            //var tests = new ByteQueueTests();
+            //tests.TestInt();
+
+            var tests = new MessageQueueTests();
+            tests.TestPingMessage();
         }
     }
 }
