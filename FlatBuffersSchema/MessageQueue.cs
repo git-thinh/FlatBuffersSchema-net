@@ -16,17 +16,9 @@ namespace FlatBuffers.Schema
 
         public void Enqueue(byte[] data)
         {
-            Debug.Assert(data != null);
-
             bytes.Enqueue(data);
         }
-
-        public IEnumerable<Message> DequeueAll()
-        {
-            for (var message = Dequeue(); message != null; message = Dequeue())
-                yield return message;
-        }
-
+   
         public Message Dequeue()
         {
             if (pendingMessageSize == 0)
@@ -46,7 +38,7 @@ namespace FlatBuffers.Schema
                     pendingMessageSize = 0;
 
                     var message = ProtocolMessage.GetRootAsProtocolMessage(new ByteBuffer(data));
-
+                    
                     var body = new byte[message.BodyLength];
                     for (var i = 0; i < body.Length; i++)
                         body[i] = message.GetBody(i);
@@ -57,5 +49,11 @@ namespace FlatBuffers.Schema
 
             return null;
         }
+        public IEnumerable<Message> DequeueAll()
+        {
+            for (var message = Dequeue(); message != null; message = Dequeue())
+                yield return message;
+        }
+
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace FlatBuffers.Schema
 {
@@ -30,77 +29,36 @@ namespace FlatBuffers.Schema
 
         public byte[] Dequeue(int bytes)
         {
-            if (bytes == 0)
-                throw new ArgumentException("bytes must > 0");
-
             if (!HasBytes(bytes))
                 return null;
 
-            byte[] dest = new byte[bytes];
+            var dest = new byte[bytes];
             int destIndex = 0;
 
-            // Fetch first element
+            while (destIndex < bytes)
             {
-                byte[] src = queue.Peek();
+                var src = queue.Peek();
+                var copyBytes = Math.Min(src.Length - passedBytes, bytes - destIndex);
 
-                destIndex = Math.Min(src.Length - passedBytes, bytes);
-                Debug.Assert(destIndex > 0);
+                Array.Copy(src, passedBytes, dest, destIndex, copyBytes);
 
-                Array.Copy(src, passedBytes, dest, 0, destIndex);
+                destIndex += copyBytes;
+                passedBytes += copyBytes;
 
-                if (destIndex == dest.Length)
+                if (passedBytes == src.Length)
                 {
-                    // Update src
-                    passedBytes += destIndex;
-
-                    if (passedBytes == src.Length)
-                    {
-                        queue.Dequeue();
-                        passedBytes = 0;
-                    }
-
-                    return dest;
+                    queue.Dequeue();
+                    passedBytes = 0;
                 }
             }
 
-            // Fetch remaining
-            int index = -1;
-            foreach (var src in queue)
-            {
-                if (++index == 0)
-                    continue;
-
-                int copiedBytes = Math.Min(src.Length, dest.Length - destIndex);
-
-                Array.Copy(src, 0, dest, destIndex, copiedBytes);
-
-                destIndex += copiedBytes;
-
-                if (destIndex == dest.Length)
-                {
-                    // Update src
-                    if (copiedBytes == src.Length)
-                    {
-                        ++index;
-                        passedBytes = 0;
-                    }
-                    else
-                        passedBytes = copiedBytes;
-
-                    // Remove elements before current
-                    for (int i = 0; i < index; ++i)
-                        queue.Dequeue();
-
-                    return dest;
-                }
-            }
-
-            return null;
+            return dest;
         }
 
         public bool HasBytes(int bytes)
         {
-            Debug.Assert(bytes > 0);
+            if (bytes == 0)
+                throw new ArgumentException("bytes must > 0");
 
             if (queue.Count == 0)
                 return false;
