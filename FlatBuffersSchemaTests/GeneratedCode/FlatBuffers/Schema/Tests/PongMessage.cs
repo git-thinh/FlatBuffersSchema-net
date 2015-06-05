@@ -1,6 +1,6 @@
 // automatically generated, do not modify
 
-namespace FlatBuffers.Schema.Test
+namespace FlatBuffers.Schema.Tests
 {
 
 using FlatBuffers;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace FlatBuffers.Schema
 {
@@ -17,7 +18,15 @@ namespace FlatBuffers.Schema
             messages.Add(messageId, creator);
         }
 
-        public Message Parse(int messageId, byte[] data)
+        public void Register<T>(T messageId, MessageCreator creator)
+            where T : IConvertible
+        {
+            var intMessageId = ((IConvertible)messageId).ToInt32(Thread.CurrentThread.CurrentCulture);
+
+            Register(intMessageId, creator);
+        }
+
+        internal Message Parse(int messageId, byte[] data)
         {
             MessageCreator creator;
             if (messages.TryGetValue(messageId, out creator))

@@ -1,4 +1,4 @@
-namespace FlatBuffers.Schema.Test;
+namespace FlatBuffers.Schema.Tests;
 
 table PingMessage {
 	count: int;

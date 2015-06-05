@@ -1,0 +1,6 @@
+namespace FlatBuffers.Schema.Tests;
+
+enum MessageIds : int {
+	Ping = 1,
+	Pong = 2,
+}
