@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ByteQueue.cs" />
+    <Compile Include="FlatBufferExtensions.cs" />
     <Compile Include="GeneratedCode\FlatBuffers\Schema\ProtocolMessage.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="MessageProcessor.cs" />

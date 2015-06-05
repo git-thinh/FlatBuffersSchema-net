@@ -23,8 +23,8 @@ namespace FlatBuffers.Schema.Tests
 
             var count = 10;
             var msg = "TestPing10";
-            var pingBuffer = CreatePingMessage(count, msg);
-            queue.Enqueue(Message.Serialize(MessageIds.Ping, pingBuffer));
+            var ping = CreatePingMessage(count, msg);
+            queue.Enqueue(ping.ToProtocolMessage(MessageIds.Ping));
 
             var message = queue.Dequeue();
             Assert.AreEqual((int)MessageIds.Ping, message.Id);
@@ -38,12 +38,8 @@ namespace FlatBuffers.Schema.Tests
         static FlatBufferBuilder CreatePingMessage(int count, string msg)
         {
             var fbb = new FlatBufferBuilder(1024);
-            var msgPos = fbb.CreateString(msg);
 
-            PingMessage.StartPingMessage(fbb);
-            PingMessage.AddCount(fbb, count);
-            PingMessage.AddMsg(fbb, msgPos);
-            var ping = PingMessage.EndPingMessage(fbb);
+            var ping = PingMessage.CreatePingMessage(fbb, count, fbb.CreateString(msg));
             PingMessage.FinishPingMessageBuffer(fbb, ping);
 
             return fbb;
