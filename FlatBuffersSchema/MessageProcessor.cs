@@ -12,11 +12,11 @@ namespace FlatBuffers.Schema
 
         class Processor
         {
-            private object reference;
+            private int reference;
             private Action<Message> processor;
             private bool once;
 
-            public Processor(object reference, Action<Message> processor, bool once)
+            public Processor(int reference, Action<Message> processor, bool once)
             {
                 this.reference = reference;
                 this.processor = processor;
@@ -30,7 +30,7 @@ namespace FlatBuffers.Schema
                 return once;
             }
 
-            public object Reference
+            public int Reference
             {
                 get { return reference; }
             }
@@ -54,7 +54,7 @@ namespace FlatBuffers.Schema
                 processors.Add(processor);
             }
 
-            public void Detach(object processor)
+            public void Detach(int processor)
             {
                 processors.RemoveAll(p => p.Reference == processor);
             }
@@ -91,24 +91,24 @@ namespace FlatBuffers.Schema
         {
             var processors = GetProcessors(messageId, true);
 
-            processors.Attach(new Processor(processor, processor, false));
+            processors.Attach(new Processor(processor.GetHashCode(), processor, false));
         }
 
-        public void AttachOnce<TTable>(int messageId, Action<Message> processor)
+        public void AttachOnce(int messageId, Action<Message> processor)
         {
             var processors = GetProcessors(messageId, true);
 
-            processors.Attach(new Processor(processor, processor, true));
+            processors.Attach(new Processor(processor.GetHashCode(), processor, true));
         }
 
-        public void Detach<TTable>(int messageId, Action<Message> processor)
+        public void Detach(int messageId, Action<Message> processor)
         {
             var processors = GetProcessors(messageId, false);
             if (processors != null)
-                processors.Detach(processor);
+                processors.Detach(processor.GetHashCode());
         }
 
-        public void Detach<TTable>(int messageId)
+        public void Detach(int messageId)
         {
             var processors = GetProcessors(messageId, false);
             if (processors != null)
