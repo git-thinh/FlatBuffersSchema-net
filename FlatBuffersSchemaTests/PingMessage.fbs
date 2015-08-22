@@ -1,8 +1,19 @@
 namespace FlatBuffers.Schema.Tests;
 
+table PingListItem {
+	key: int;
+	value: int;
+}
+
+table PingList {
+	ticks: int;
+	items: [PingListItem];
+}
+
 table PingMessage {
 	count: int;
 	msg: string;
+	lists: [PingList];
 }
 
 root_type PingMessage;
