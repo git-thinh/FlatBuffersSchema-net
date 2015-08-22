@@ -13,9 +13,9 @@ public sealed class PingMessage : Table {
   public int Count { get { int o = __offset(4); return o != 0 ? bb.GetInt(o + bb_pos) : (int)0; } }
   public string Msg { get { int o = __offset(6); return o != 0 ? __string(o + bb_pos) : null; } }
 
-  public static int CreatePingMessage(FlatBufferBuilder builder,
+  public static Offset<PingMessage> CreatePingMessage(FlatBufferBuilder builder,
       int count = 0,
-      int msg = 0) {
+      StringOffset msg = default(StringOffset)) {
     builder.StartObject(2);
     PingMessage.AddMsg(builder, msg);
     PingMessage.AddCount(builder, count);
@@ -24,12 +24,12 @@ public sealed class PingMessage : Table {
 
   public static void StartPingMessage(FlatBufferBuilder builder) { builder.StartObject(2); }
   public static void AddCount(FlatBufferBuilder builder, int count) { builder.AddInt(0, count, 0); }
-  public static void AddMsg(FlatBufferBuilder builder, int msgOffset) { builder.AddOffset(1, msgOffset, 0); }
-  public static int EndPingMessage(FlatBufferBuilder builder) {
+  public static void AddMsg(FlatBufferBuilder builder, StringOffset msgOffset) { builder.AddOffset(1, msgOffset.Value, 0); }
+  public static Offset<PingMessage> EndPingMessage(FlatBufferBuilder builder) {
     int o = builder.EndObject();
-    return o;
+    return new Offset<PingMessage>(o);
   }
-  public static void FinishPingMessageBuffer(FlatBufferBuilder builder, int offset) { builder.Finish(offset); }
+  public static void FinishPingMessageBuffer(FlatBufferBuilder builder, Offset<PingMessage> offset) { builder.Finish(offset.Value); }
 };
 
 

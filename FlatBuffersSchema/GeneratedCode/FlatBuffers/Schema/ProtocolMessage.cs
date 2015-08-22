@@ -14,9 +14,9 @@ public sealed class ProtocolMessage : Table {
   public byte GetBody(int j) { int o = __offset(6); return o != 0 ? bb.Get(__vector(o) + j * 1) : (byte)0; }
   public int BodyLength { get { int o = __offset(6); return o != 0 ? __vector_len(o) : 0; } }
 
-  public static int CreateProtocolMessage(FlatBufferBuilder builder,
+  public static Offset<ProtocolMessage> CreateProtocolMessage(FlatBufferBuilder builder,
       int id = 0,
-      int body = 0) {
+      VectorOffset body = default(VectorOffset)) {
     builder.StartObject(2);
     ProtocolMessage.AddBody(builder, body);
     ProtocolMessage.AddId(builder, id);
@@ -25,14 +25,14 @@ public sealed class ProtocolMessage : Table {
 
   public static void StartProtocolMessage(FlatBufferBuilder builder) { builder.StartObject(2); }
   public static void AddId(FlatBufferBuilder builder, int id) { builder.AddInt(0, id, 0); }
-  public static void AddBody(FlatBufferBuilder builder, int bodyOffset) { builder.AddOffset(1, bodyOffset, 0); }
-  public static int CreateBodyVector(FlatBufferBuilder builder, byte[] data) { builder.StartVector(1, data.Length, 1); for (int i = data.Length - 1; i >= 0; i--) builder.AddByte(data[i]); return builder.EndVector(); }
+  public static void AddBody(FlatBufferBuilder builder, VectorOffset bodyOffset) { builder.AddOffset(1, bodyOffset.Value, 0); }
+  public static VectorOffset CreateBodyVector(FlatBufferBuilder builder, byte[] data) { builder.StartVector(1, data.Length, 1); for (int i = data.Length - 1; i >= 0; i--) builder.AddByte(data[i]); return builder.EndVector(); }
   public static void StartBodyVector(FlatBufferBuilder builder, int numElems) { builder.StartVector(1, numElems, 1); }
-  public static int EndProtocolMessage(FlatBufferBuilder builder) {
+  public static Offset<ProtocolMessage> EndProtocolMessage(FlatBufferBuilder builder) {
     int o = builder.EndObject();
-    return o;
+    return new Offset<ProtocolMessage>(o);
   }
-  public static void FinishProtocolMessageBuffer(FlatBufferBuilder builder, int offset) { builder.Finish(offset); }
+  public static void FinishProtocolMessageBuffer(FlatBufferBuilder builder, Offset<ProtocolMessage> offset) { builder.Finish(offset.Value); }
 };
 
 
