@@ -1,4 +1,28 @@
-﻿using System;
+﻿/*
+ * The MIT License (MIT)
+ * 
+ * Copyright (c) 2015 Wu Yuntao
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+*/
+
+using System;
 using System.Collections.Generic;
 
 namespace FlatBuffers.Schema
@@ -25,14 +49,14 @@ namespace FlatBuffers.Schema
 
             public bool Invoke(Message message)
             {
-                processor(message);
+                this.processor(message);
 
                 return once;
             }
 
             public int Reference
             {
-                get { return reference; }
+                get { return this.reference; }
             }
         }
 
@@ -46,22 +70,22 @@ namespace FlatBuffers.Schema
 
             public void Process(Message message)
             {
-                processors.RemoveAll(p => p.Invoke(message));
+                this.processors.RemoveAll(p => p.Invoke(message));
             }
 
             public void Attach(Processor processor)
             {
-                processors.Add(processor);
+                this.processors.Add(processor);
             }
 
             public void Detach(int processor)
             {
-                processors.RemoveAll(p => p.Reference == processor);
+                this.processors.RemoveAll(p => p.Reference == processor);
             }
 
             public void DetachAll()
             {
-                processors.Clear();
+                this.processors.Clear();
             }
         }
 
@@ -69,17 +93,17 @@ namespace FlatBuffers.Schema
 
         public MessageProcessor(MessageSchema schema)
         {
-            messages = new MessageQueue(schema);
+            this.messages = new MessageQueue(schema);
         }
 
         public void Enqueue(byte[] data)
         {
-            messages.Enqueue(data);
+            this.messages.Enqueue(data);
         }
 
         public void Process()
         {
-            foreach (var message in messages.DequeueAll())
+            foreach (var message in this.messages.DequeueAll())
             {
                 var processors = GetProcessors(message.Id, false);
                 if (processors != null)
@@ -118,12 +142,12 @@ namespace FlatBuffers.Schema
         ProcessorSet GetProcessors(int messageId, bool createWhenNotExist)
         {
             ProcessorSet processors;
-            if (!processorSets.TryGetValue(messageId, out processors))
+            if (!this.processorSets.TryGetValue(messageId, out processors))
             {
                 if (createWhenNotExist)
                 {
                     processors = new ProcessorSet();
-                    processorSets.Add(messageId, processors);
+                    this.processorSets.Add(messageId, processors);
                 }
             }
 
