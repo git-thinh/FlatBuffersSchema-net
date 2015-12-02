@@ -16,9 +16,9 @@ public sealed class ProtocolMessage : Table {
 
   public static Offset<ProtocolMessage> CreateProtocolMessage(FlatBufferBuilder builder,
       int id = 0,
-      VectorOffset body = default(VectorOffset)) {
+      VectorOffset bodyOffset = default(VectorOffset)) {
     builder.StartObject(2);
-    ProtocolMessage.AddBody(builder, body);
+    ProtocolMessage.AddBody(builder, bodyOffset);
     ProtocolMessage.AddId(builder, id);
     return ProtocolMessage.EndProtocolMessage(builder);
   }

@@ -15,9 +15,9 @@ public sealed class PongMessage : Table {
 
   public static Offset<PongMessage> CreatePongMessage(FlatBufferBuilder builder,
       int count = 0,
-      StringOffset msg = default(StringOffset)) {
+      StringOffset msgOffset = default(StringOffset)) {
     builder.StartObject(2);
-    PongMessage.AddMsg(builder, msg);
+    PongMessage.AddMsg(builder, msgOffset);
     PongMessage.AddCount(builder, count);
     return PongMessage.EndPongMessage(builder);
   }

@@ -18,11 +18,11 @@ public sealed class PingMessage : Table {
 
   public static Offset<PingMessage> CreatePingMessage(FlatBufferBuilder builder,
       int count = 0,
-      StringOffset msg = default(StringOffset),
-      VectorOffset lists = default(VectorOffset)) {
+      StringOffset msgOffset = default(StringOffset),
+      VectorOffset listsOffset = default(VectorOffset)) {
     builder.StartObject(3);
-    PingMessage.AddLists(builder, lists);
-    PingMessage.AddMsg(builder, msg);
+    PingMessage.AddLists(builder, listsOffset);
+    PingMessage.AddMsg(builder, msgOffset);
     PingMessage.AddCount(builder, count);
     return PingMessage.EndPingMessage(builder);
   }
