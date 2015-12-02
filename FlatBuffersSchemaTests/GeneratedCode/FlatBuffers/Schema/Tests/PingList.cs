@@ -17,9 +17,9 @@ public sealed class PingList : Table {
 
   public static Offset<PingList> CreatePingList(FlatBufferBuilder builder,
       int ticks = 0,
-      VectorOffset items = default(VectorOffset)) {
+      VectorOffset itemsOffset = default(VectorOffset)) {
     builder.StartObject(2);
-    PingList.AddItems(builder, items);
+    PingList.AddItems(builder, itemsOffset);
     PingList.AddTicks(builder, ticks);
     return PingList.EndPingList(builder);
   }
