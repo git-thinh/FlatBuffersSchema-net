@@ -23,7 +23,6 @@
 */
 
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace FlatBuffers.Schema
 {
@@ -42,7 +41,12 @@ namespace FlatBuffers.Schema
         {
             this.bytes.Enqueue(data);
         }
-   
+
+        public void Enqueue(byte[] data, int offset, int count)
+        {
+            this.bytes.Enqueue(data, offset, count);
+        }
+
         public Message Dequeue()
         {
             if (this.pendingMessageSize == 0)
@@ -62,7 +66,7 @@ namespace FlatBuffers.Schema
                     this.pendingMessageSize = 0;
 
                     var message = ProtocolMessage.GetRootAsProtocolMessage(new ByteBuffer(data));
-                    
+
                     var body = new byte[message.BodyLength];
                     for (var i = 0; i < body.Length; i++)
                         body[i] = message.GetBody(i);

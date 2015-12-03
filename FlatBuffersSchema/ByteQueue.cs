@@ -41,6 +41,23 @@ namespace FlatBuffers.Schema
             this.queue.Enqueue(data);
         }
 
+        public void Enqueue(byte[] data, int offset, int count)
+        {
+            if (data == null)
+                throw new ArgumentNullException("data");
+
+            if (offset < 0 || offset >= data.Length)
+                throw new ArgumentOutOfRangeException("offset");
+
+            if (count <= 0 || offset + count >= data.Length)
+                throw new ArgumentOutOfRangeException("length");
+
+            var bytes = new byte[count];
+            Array.Copy(data, offset, bytes, 0, count);
+
+            this.queue.Enqueue(data);
+        }
+
         public int? Dequeue()
         {
             var bytes = Dequeue(sizeof(int));
