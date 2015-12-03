@@ -49,7 +49,7 @@ namespace FlatBuffers.Schema
             if (offset < 0 || offset >= data.Length)
                 throw new ArgumentOutOfRangeException("offset");
 
-            if (count <= 0 || offset + count >= data.Length)
+            if (count <= 0 || offset + count > data.Length)
                 throw new ArgumentOutOfRangeException("length");
 
             var bytes = new byte[count];
