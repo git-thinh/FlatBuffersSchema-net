@@ -69,7 +69,7 @@ namespace FlatBuffers.Schema
 
                     var body = new byte[message.BodyLength];
                     for (var i = 0; i < body.Length; i++)
-                        body[i] = message.GetBody(i);
+                        body[i] = message.Body( i);
 
                     return this.schema.Parse(message.Id, body);
                 }

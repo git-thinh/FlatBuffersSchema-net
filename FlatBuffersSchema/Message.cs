@@ -29,15 +29,15 @@ namespace FlatBuffers.Schema
     public sealed class Message
     {
         private int id;
-        private Table body;
+        private IFlatbufferObject body;
 
-        internal Message(int id, Table body)
+        internal Message(int id, IFlatbufferObject body)
         {
             this.id = id;
             this.body = body;
         }
 
         public int Id { get { return id; } }
-        public Table Body { get { return body; } }
+        public IFlatbufferObject Body { get { return body; } }
     }
 }

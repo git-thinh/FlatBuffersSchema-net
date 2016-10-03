@@ -30,7 +30,7 @@ namespace FlatBuffers.Schema
 {
     public sealed class MessageSchema
     {
-        public delegate Table MessageCreator(ByteBuffer buffer);
+        public delegate IFlatbufferObject MessageCreator(ByteBuffer buffer);
 
         private Dictionary<int, MessageCreator> messages = new Dictionary<int, MessageCreator>();
 
