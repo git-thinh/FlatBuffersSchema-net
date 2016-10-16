@@ -53,17 +53,23 @@ namespace FlatBuffers.Schema
             Register(intMessageId, creator);
         }
 
-        internal Message Parse(int messageId, byte[] data)
+        public Message Parse(int messageId, byte[] data, int offset, int length)
         {
             MessageCreator creator;
             if (messages.TryGetValue(messageId, out creator))
             {
-                var body = creator(new ByteBuffer(data));
+                var body = creator(new ByteBuffer(data, offset));
 
                 return new Message(messageId, body);
             }
 
             throw new InvalidOperationException(string.Format("Missing creator for message #{0}", messageId));
         }
+
+        public Message Parse(int messageId, byte[] data)
+        {
+            return Parse(messageId, data, 0, data.Length);
+        }
+
     }
 }
