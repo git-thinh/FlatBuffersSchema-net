@@ -44,7 +44,7 @@ namespace FlatBuffers.Schema
 
         TObject Deserialize(TFlatBufferObject obj);
 
-        TObject[] Deserialize(int objectsLength, Func<int, TFlatBufferObject> getObjects);
+        TObject[] Deserialize(int objectsLength, Func<int, TFlatBufferObject?> getObjects);
     }
 
     public abstract class FlatBufferSerializer<TObject, TFlatBufferObject> : IFlatBufferSerializer<TObject, TFlatBufferObject>, IFlatBufferSerializer
@@ -73,6 +73,18 @@ namespace FlatBuffers.Schema
             return offsets;
         }
 
+        public static StringOffset[] SerializeString(FlatBufferBuilder fbb, string[] objects)
+        {
+            if (objects == null)
+                return null;
+
+            var offsets = new StringOffset[objects.Length];
+            for (int i = 0; i < objects.Length; i++)
+                offsets[i] = fbb.CreateString(objects[i]);
+
+            return offsets;
+        }
+
         public object Deserialize(byte[] data)
         {
             if (data == null)
@@ -93,7 +105,7 @@ namespace FlatBuffers.Schema
 
         public abstract TObject Deserialize(TFlatBufferObject obj);
 
-        public TObject[] Deserialize(int objectsLength, Func<int, TFlatBufferObject> getObjects)
+        public TObject[] Deserialize(int objectsLength, Func<int, TFlatBufferObject?> getObjects)
         {
             if (objectsLength == 0)
                 return null;
@@ -106,7 +118,6 @@ namespace FlatBuffers.Schema
         }
 
         public static T[] DeserializeScalar<T>(int objectsLength, Func<int, T> getObjects)
-            where T : struct
         {
             if (objectsLength == 0)
                 return null;
