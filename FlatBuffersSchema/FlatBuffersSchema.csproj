@@ -39,22 +39,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ByteQueue.cs" />
-    <Compile Include="FlatBufferExtensions.cs" />
-    <Compile Include="GeneratedCode\FlatBuffers\Schema\ProtocolMessage.cs" />
-    <Compile Include="FlatBufferSerializers.cs" />
+    <Compile Include="Serializer.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="MessageProcessor.cs" />
     <Compile Include="MessageQueue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="MessageSchema.cs" />
+    <Compile Include="Schema.cs" />
+    <Compile Include="SerializerSet.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <None Include="ProtocolMessage.fbs" />
+    <None Include="Schema.fbs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>$(SolutionDir)FlatBuffers\flatc.exe -n -o $(ProjectDir)GeneratedCode $(ProjectDir)ProtocolMessage.fbs</PreBuildEvent>
+    <PreBuildEvent>$(SolutionDir)FlatBuffers\flatc.exe -n --gen-onefile -o $(ProjectDir) $(ProjectDir)Schema.fbs</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

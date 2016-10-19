@@ -28,14 +28,8 @@ namespace FlatBuffers.Schema
 {
     public sealed class MessageQueue
     {
-        private MessageSchema schema;
         private ByteQueue bytes = new ByteQueue();
         private int pendingMessageSize;
-
-        public MessageQueue(MessageSchema schema)
-        {
-            this.schema = schema;
-        }
 
         public void Enqueue(byte[] data)
         {
@@ -65,13 +59,7 @@ namespace FlatBuffers.Schema
                 {
                     this.pendingMessageSize = 0;
 
-                    var message = ProtocolMessage.GetRootAsProtocolMessage(new ByteBuffer(data));
-
-                    var body = new byte[message.BodyLength];
-                    for (var i = 0; i < body.Length; i++)
-                        body[i] = message.Body(i);
-
-                    return this.schema.Parse(message.Id, body);
+                    return (Message)MessageSerializer.Instance.Deserialize(data);
                 }
             }
 

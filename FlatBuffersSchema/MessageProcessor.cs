@@ -30,7 +30,7 @@ namespace FlatBuffers.Schema
     public sealed class MessageProcessor
     {
         private MessageQueue messages;
-        private Dictionary<int, ProcessorSet> processorSets = new Dictionary<int, ProcessorSet>();
+        private Dictionary<string, ProcessorSet> processorSets = new Dictionary<string, ProcessorSet>();
 
         #region Processor
 
@@ -91,9 +91,9 @@ namespace FlatBuffers.Schema
 
         #endregion
 
-        public MessageProcessor(MessageSchema schema)
+        public MessageProcessor()
         {
-            this.messages = new MessageQueue(schema);
+            this.messages = new MessageQueue();
         }
 
         public void Enqueue(byte[] data)
@@ -105,49 +105,49 @@ namespace FlatBuffers.Schema
         {
             foreach (var message in this.messages.DequeueAll())
             {
-                var processors = GetProcessors(message.Id, false);
+                var processors = GetProcessors(message.Type, false);
                 if (processors != null)
                     processors.Process(message);
             }
         }
 
-        public void Attach(int messageId, Action<Message> processor)
+        public void Attach(Type type, Action<Message> processor)
         {
-            var processors = GetProcessors(messageId, true);
+            var processors = GetProcessors(type.FullName, true);
 
             processors.Attach(new Processor(processor.GetHashCode(), processor, false));
         }
 
-        public void AttachOnce(int messageId, Action<Message> processor)
+        public void AttachOnce(Type type, Action<Message> processor)
         {
-            var processors = GetProcessors(messageId, true);
+            var processors = GetProcessors(type.FullName, true);
 
             processors.Attach(new Processor(processor.GetHashCode(), processor, true));
         }
 
-        public void Detach(int messageId, Action<Message> processor)
+        public void Detach(Type type, Action<Message> processor)
         {
-            var processors = GetProcessors(messageId, false);
+            var processors = GetProcessors(type.FullName, false);
             if (processors != null)
                 processors.Detach(processor.GetHashCode());
         }
 
-        public void Detach(int messageId)
+        public void Detach(Type type)
         {
-            var processors = GetProcessors(messageId, false);
+            var processors = GetProcessors(type.FullName, false);
             if (processors != null)
                 processors.DetachAll();
         }
 
-        ProcessorSet GetProcessors(int messageId, bool createWhenNotExist)
+        ProcessorSet GetProcessors(string typeName, bool createWhenNotExist)
         {
             ProcessorSet processors;
-            if (!this.processorSets.TryGetValue(messageId, out processors))
+            if (!this.processorSets.TryGetValue(typeName, out processors))
             {
                 if (createWhenNotExist)
                 {
                     processors = new ProcessorSet();
-                    this.processorSets.Add(messageId, processors);
+                    this.processorSets.Add(typeName, processors);
                 }
             }
 

@@ -26,14 +26,14 @@ using System;
 
 namespace FlatBuffers.Schema
 {
-    public interface IFlatBufferSerializer
+    public interface ISerializer
     {
         byte[] Serialize(object obj);
 
         object Deserialize(byte[] data);
     }
 
-    public interface IFlatBufferSerializer<TObject, TFlatBufferObject>
+    public interface ISerializer<TObject, TFlatBufferObject>
         where TFlatBufferObject : struct, IFlatbufferObject
     {
         Offset<TFlatBufferObject> Serialize(FlatBufferBuilder fbb, TObject obj);
@@ -47,7 +47,7 @@ namespace FlatBuffers.Schema
         TObject[] Deserialize(int objectsLength, Func<int, TFlatBufferObject?> getObjects);
     }
 
-    public abstract class FlatBufferSerializer<TObject, TFlatBufferObject> : IFlatBufferSerializer<TObject, TFlatBufferObject>, IFlatBufferSerializer
+    public abstract class Serializer<TObject, TFlatBufferObject> : ISerializer<TObject, TFlatBufferObject>, ISerializer
         where TFlatBufferObject : struct, IFlatbufferObject
     {
         public byte[] Serialize(object obj)

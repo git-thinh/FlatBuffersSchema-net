@@ -1,8 +1,0 @@
-namespace FlatBuffers.Schema;
-
-table ProtocolMessage {
-	id: int;
-	body: [ubyte];
-}
-
-root_type ProtocolMessage;

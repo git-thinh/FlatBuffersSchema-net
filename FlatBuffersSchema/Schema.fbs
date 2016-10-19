@@ -1,0 +1,8 @@
+namespace FlatBuffers.Schema;
+
+table MessageEnvelope {
+	type: string;
+	body: [ubyte];
+}
+
+root_type MessageEnvelope;

@@ -1,8 +1,0 @@
-namespace FlatBuffers.Schema.Tests;
-
-table PongMessage {
-	count: int;
-	msg: string;
-}
-
-root_type PongMessage;

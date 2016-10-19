@@ -16,4 +16,7 @@ table PingMessage {
 	lists: [PingList];
 }
 
-root_type PingMessage;
+table PongMessage {
+	count: int;
+	msg: string;
+}

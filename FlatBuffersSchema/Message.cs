@@ -28,16 +28,43 @@ namespace FlatBuffers.Schema
 {
     public sealed class Message
     {
-        private int id;
-        private IFlatbufferObject body;
+        public readonly string Type;
+        public readonly object Object;
 
-        internal Message(int id, IFlatbufferObject body)
+        internal Message(string type, object body)
         {
-            this.id = id;
-            this.body = body;
+            Type = type;
+            Object = body;
+        }
+    }
+
+    public sealed class MessageSerializer : Serializer<Message, MessageEnvelope>
+    {
+        public static readonly MessageSerializer Instance = new MessageSerializer();
+
+        public override Offset<MessageEnvelope> Serialize(FlatBufferBuilder fbb, Message msg)
+        {
+            var oType = fbb.CreateString(msg.Type);
+
+            var bytes = SerializerSet.Instance.Serialize(msg.Type, msg.Object);
+            var oBody = MessageEnvelope.CreateBodyVector(fbb, bytes);
+
+            return MessageEnvelope.CreateMessageEnvelope(fbb, oType, oBody);
         }
 
-        public int Id { get { return id; } }
-        public IFlatbufferObject Body { get { return body; } }
+        protected override MessageEnvelope GetRootAs(ByteBuffer buffer)
+        {
+            return MessageEnvelope.GetRootAsMessageEnvelope(buffer);
+        }
+
+        public override Message Deserialize(MessageEnvelope envelope)
+        {
+            var type = envelope.Type;
+            var bytes = DeserializeScalar(envelope.BodyLength, envelope.Body);
+
+            var obj = SerializerSet.Instance.Deserialize(type, bytes);
+
+            return new Message(type, obj);
+        }
     }
 }
