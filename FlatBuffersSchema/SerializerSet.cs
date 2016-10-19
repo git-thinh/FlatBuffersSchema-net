@@ -24,30 +24,68 @@
 
 using System;
 using System.Collections.Generic;
+using System.Reflection;
+using System.Threading;
 
 namespace FlatBuffers.Schema
 {
     public sealed class SerializerSet
     {
-        public static readonly SerializerSet Instance = new SerializerSet();
+        #region Instance
 
+        private static readonly SerializerSet instance;
+
+        static SerializerSet()
+        {
+            instance = new SerializerSet();
+
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+                InitializeSerializers(assembly);
+
+            AppDomain.CurrentDomain.AssemblyLoad += (s, args) => InitializeSerializers(args.LoadedAssembly);
+        }
+
+        private static void InitializeSerializers(Assembly assembly)
+        {
+            foreach (var type in assembly.GetTypes())
+            {
+                if (typeof(ISerializer).IsAssignableFrom(type))
+                {
+                    var instanceField = type.GetField("Instance", BindingFlags.Public | BindingFlags.Static);
+                    if (instanceField != null)
+                    {
+                        instanceField.GetValue(null);
+                    }
+                }
+            }
+        }
+
+        public static SerializerSet Instance
+        {
+            get { return instance; }
+        }
+
+        #endregion
+
+        private readonly ReaderWriterLockSlim serializersLock = new ReaderWriterLockSlim();
         private readonly Dictionary<string, ISerializer> serializers = new Dictionary<string, ISerializer>();
 
         internal SerializerSet()
-        { }
-
-        public TSerializer CreateSerializer<TSerializer, TObject, TFlatBufferObject>()
-            where TSerializer : ISerializer<TObject, TFlatBufferObject>, ISerializer, new()
-            where TFlatBufferObject : struct, IFlatbufferObject
         {
-            var serializer = new TSerializer();
-            AddSerializer(typeof(TObject), serializer);
-            return serializer;
         }
 
         public void AddSerializer(Type type, ISerializer serializer)
         {
-            serializers.Add(type.FullName, serializer);
+            serializersLock.EnterWriteLock();
+
+            try
+            {
+                serializers.Add(type.FullName, serializer);
+            }
+            finally
+            {
+                serializersLock.ExitWriteLock();
+            }
         }
 
         public ISerializer GetSerializer(Type type)
@@ -57,9 +95,18 @@ namespace FlatBuffers.Schema
 
         private ISerializer GetSerializer(string typeName)
         {
-            ISerializer serializer;
-            serializers.TryGetValue(typeName, out serializer);
-            return serializer;
+            serializersLock.EnterReadLock();
+
+            try
+            {
+                ISerializer serializer;
+                serializers.TryGetValue(typeName, out serializer);
+                return serializer;
+            }
+            finally
+            {
+                serializersLock.ExitReadLock();
+            }
         }
 
         public byte[] Serialize(Type type, object obj)

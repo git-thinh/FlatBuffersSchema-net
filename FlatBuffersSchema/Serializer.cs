@@ -50,6 +50,11 @@ namespace FlatBuffers.Schema
     public abstract class Serializer<TObject, TFlatBufferObject> : ISerializer<TObject, TFlatBufferObject>, ISerializer
         where TFlatBufferObject : struct, IFlatbufferObject
     {
+        public Serializer()
+        {
+            SerializerSet.Instance.AddSerializer(typeof(TObject), this);
+        }
+
         public byte[] Serialize(object obj)
         {
             var fbb = new FlatBufferBuilder(1024);

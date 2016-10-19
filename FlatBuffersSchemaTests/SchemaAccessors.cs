@@ -16,7 +16,7 @@ namespace FlatBuffers.Schema.Tests
 
     public class PingListItemSerializer : Serializer<MutablePingListItem, PingListItem>
     {
-        public static readonly PingListItemSerializer Instance = SerializerSet.Instance.CreateSerializer<PingListItemSerializer, MutablePingListItem, PingListItem>();
+        public static readonly PingListItemSerializer Instance = new PingListItemSerializer();
 
         public override Offset<PingListItem> Serialize(FlatBufferBuilder fbb, MutablePingListItem obj)
         {
@@ -49,7 +49,7 @@ namespace FlatBuffers.Schema.Tests
 
     public class PingListSerializer : Serializer<MutablePingList, PingList>
     {
-        public static readonly PingListSerializer Instance = SerializerSet.Instance.CreateSerializer<PingListSerializer, MutablePingList, PingList>();
+        public static readonly PingListSerializer Instance = new PingListSerializer();
 
         public override Offset<PingList> Serialize(FlatBufferBuilder fbb, MutablePingList obj)
         {
@@ -85,7 +85,7 @@ namespace FlatBuffers.Schema.Tests
 
     public class PingMessageSerializer : Serializer<MutablePingMessage, PingMessage>
     {
-        public static readonly PingMessageSerializer Instance = SerializerSet.Instance.CreateSerializer<PingMessageSerializer, MutablePingMessage, PingMessage>();
+        public static readonly PingMessageSerializer Instance = new PingMessageSerializer();
 
         public override Offset<PingMessage> Serialize(FlatBufferBuilder fbb, MutablePingMessage obj)
         {
@@ -123,7 +123,7 @@ namespace FlatBuffers.Schema.Tests
 
     public class PongMessageSerializer : Serializer<MutablePongMessage, PongMessage>
     {
-        public static readonly PongMessageSerializer Instance = SerializerSet.Instance.CreateSerializer<PongMessageSerializer, MutablePongMessage, PongMessage>();
+        public static readonly PongMessageSerializer Instance = new PongMessageSerializer();
 
         public override Offset<PongMessage> Serialize(FlatBufferBuilder fbb, MutablePongMessage obj)
         {
