@@ -23,6 +23,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 
 namespace FlatBuffers.Schema
 {
@@ -38,7 +39,7 @@ namespace FlatBuffers.Schema
     {
         Offset<TFlatBufferObject> Serialize(FlatBufferBuilder fbb, TObject obj);
 
-        Offset<TFlatBufferObject>[] Serialize(FlatBufferBuilder fbb, TObject[] objects);
+        Offset<TFlatBufferObject>[] Serialize(FlatBufferBuilder fbb, IList<TObject> objects);
 
         TObject Deserialize(TFlatBufferObject? obj);
 
@@ -66,13 +67,13 @@ namespace FlatBuffers.Schema
 
         public abstract Offset<TFlatBufferObject> Serialize(FlatBufferBuilder fbb, TObject obj);
 
-        public Offset<TFlatBufferObject>[] Serialize(FlatBufferBuilder fbb, TObject[] objects)
+        public Offset<TFlatBufferObject>[] Serialize(FlatBufferBuilder fbb, IList<TObject> objects)
         {
             if (objects == null)
                 return null;
 
-            var offsets = new Offset<TFlatBufferObject>[objects.Length];
-            for (int i = 0; i < objects.Length; i++)
+            var offsets = new Offset<TFlatBufferObject>[objects.Count];
+            for (int i = 0; i < objects.Count; i++)
                 offsets[i] = Serialize(fbb, objects[i]);
 
             return offsets;
